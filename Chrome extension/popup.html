@@ -1,0 +1,95 @@
+<html>
+<head>
+  <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+  <link rel="stylesheet" href="page_style.css" type="text/css"/>
+</head>
+<body>
+  <script type="text/javascript">
+  String.prototype.capitalize = function(){
+    return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+  };
+
+  var serverUrl, secret;
+
+  // Retrieves settings
+  chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
+  function restoreOptions(response) {
+    serverUrl = response.serverUrl;
+    secret    = response.secret;
+  };
+
+  // polls background.html for info
+  function pollnotifications () {
+    chrome.extension.sendRequest({command: "getNotifications"}, treatNotifications);
+    setTimeout(pollnotifications, 1000);
+  }
+  pollnotifications();
+
+
+  // modifies list of voicemails and/or calls depending on server response
+  function treatNotifications (server_response) {
+    // response = JSON.parse(server_response);
+    response = server_response;
+
+    // Calls
+    var endedCalls = 0;
+    for (var i = 0; i < response["Calls"].length; i++) {
+      var call = response["Calls"][i];
+      if (call["Status"] == "ended") {
+        $('#'+call["CallGuid"]).remove();
+        endedCalls += 1;
+      } else if (document.getElementById(call["CallGuid"]) == undefined) {
+        var new_call = document.createElement('div');
+        new_call.id = call["CallGuid"];
+        new_call.className = "call";
+        var location = call["Location"].toLowerCase().capitalize();
+        new_call.innerHTML = "<p><strong>Incoming call: "+call["Caller"]+"</strong> ("+location+")</p>";
+        // new_call.innerHTML += "<h2>"+location+"</h2>";
+        // new_call.innerHTML += "<div class='button ignore' onclick='ignoreCall("+call["CallGuid"]+");'>Ignore</div>";
+        // var function_code = "$.ajax({url: \""+serverUrl+"?action=ignorecall&CallGuid="+call["CallGuid"]+"\", success: function () {console.log(\"Call successfully ignored\")}});";
+        // var function_code = '$.ajax({url: \''+serverUrl+'?action=getnumber\', success: function (data) {console.log(data)}});';
+        var function_code = 'var s=document.createElement(\'script\');s.type=\'text/javascript\';s.src=\''+serverUrl+'?action=ignorecall&CallGuid='+call["CallGuid"]+'\';document.body.appendChild(s);';
+        new_call.innerHTML += "<div class='button ignore' onclick=\""+function_code+"\">Ignore</div>";
+        function_code = 'var s=document.createElement(\'script\');s.type=\'text/javascript\';s.src=\''+serverUrl+'?action=sendtovoicemail&CallGuid='+call["CallGuid"]+'\';document.body.appendChild(s);';
+        new_call.innerHTML += "<div class='button sendtovoicemail' onclick=\""+function_code+"\">Voicemail</div>";
+        new_call.innerHTML += "<div style='clear:both'></div>";
+        $('#notwilfications #calls').append(new_call);
+      }
+    }
+    if (response["Calls"].length == endedCalls) {
+      $("#calls").html("No active calls.");
+    }
+    
+
+    // Voicemails
+    for (var i = 0; i < response["Voicemails"].length; i++) {
+      var vm = response["Voicemails"][i];
+      if (document.getElementById("VM"+vm["CallGuid"]) == undefined) {
+        var new_vm = document.createElement('div');
+        new_vm.id = "VM"+vm["CallGuid"];
+        new_vm.className = "voicemail";
+        var location = vm["Location"].toLowerCase().capitalize();
+        new_vm.innerHTML = "<p><strong>New voicemail from "+vm["Caller"]+"</strong> ("+location+")<br/>"+vm["Timestamp"]+"</p>";
+        // new_vm.innerHTML += "<h2>"+location+"</h2>";
+        new_vm.innerHTML += "<audio src='"+vm["RecordingUrl"]+".mp3' controls autobuffer preload></audio>";
+        // new_call.innerHTML += "<div class='button ignore' onclick='ignoreCall("+call["CallGuid"]+");'>Ignore</div>";
+        // var function_code = "$.ajax({url: \""+serverUrl+"?action=ignorecall&CallGuid="+call["CallGuid"]+"\", success: function () {console.log(\"Call successfully ignored\")}});";
+        // var function_code = '$.ajax({url: \''+serverUrl+'?action=getnumber\', success: function (data) {console.log(data)}});';
+        var function_code = 'var s=document.createElement(\'script\');s.type=\'text/javascript\';s.src=\''+serverUrl+'?action=vmlistened&CallGuid='+vm["CallGuid"]+'\';document.body.appendChild(s);';
+        new_vm.innerHTML += "<div class='close' onclick=\""+function_code+"\">Archive</div>";
+        $('#notwilfications #voicemails').append(new_vm);
+      }
+    }
+    if (response["Voicemails"].length == 0) {
+      $("#voicemails").html("No new voicemails.");
+    }
+
+  }
+
+  </script>
+  <div id="notwilfications">
+    <div id='calls'></div>
+    <div id='voicemails'></div>
+  </div>
+</body>
+</html>

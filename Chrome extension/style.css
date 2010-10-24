@@ -1,0 +1,122 @@
+body {
+  background: #608299 url('images/header_bg.png') repeat-x top left;
+  color: #eee;
+  font-family: Myriad Pro, Arial, sans-serif;
+  width: 100%;
+  font-size: 12pt;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.subtext {
+  font-size: 9pt;
+  padding-top:5px;
+}
+
+#header {
+  position: relative;
+/*  top: -6px;*/
+  width: 800px;
+  height: 57px;
+  margin: 0px auto 20px;
+}
+
+#header h1 {
+  text-shadow: #000 0px -1px 0px;
+  font-weight: normal;
+  margin: 0px;
+  position: absolute;
+  bottom: 0px;
+}
+
+#content {
+  width: 800px;
+  min-height: 150px;
+/*  height: 611px;*/
+  margin: 0px auto;
+  overflow: auto;
+  background: url('images/content_bg.png') no-repeat top left;
+  overflow: hidden;
+  position: relative;
+}
+
+#content_bottom {
+  width: 800px;
+  height: 2px;
+  margin: 0px auto;
+  overflow: auto;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background: url('images/content_bg.png') no-repeat bottom left;
+  overflow: hidden;
+  
+}
+
+/* for Chrome extension */
+#options {
+  width: 90%;
+  padding: 20px;
+}
+
+#options h2 {
+  margin: 0;
+}
+
+#options label {
+  padding-top: 20px;
+  cursor: pointer;
+  width: 250px;
+  display: block;
+}
+
+#options input[type="text"] {
+  width: 250px;
+}
+
+#options #shortcut_label {
+}
+
+#options #shortcut {
+  cursor: pointer;
+  -webkit-border-radius: 20px;
+  text-align: center;
+  width: 100px;
+  margin-left: 10px;
+  padding: 5px;
+  border:none;
+}
+
+#help {
+  margin-top: 20px;
+}
+
+#help strong{
+  color: #ff4444;
+  font-size: 1.2em;
+}
+
+/* for Chrome extension */
+#footer {
+  width: 100%;
+  clear: both;
+  text-align: center;
+  font-size: 9pt;
+  margin-top: 10px;
+}
+
+#footer a {
+  color: white;
+}
+#footer a:hover {
+  color: #ddd;
+}

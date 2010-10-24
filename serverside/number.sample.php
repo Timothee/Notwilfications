@@ -1,0 +1,1 @@
+<?php define(PHONE_NUMBER, '415XXX1234'); ?>

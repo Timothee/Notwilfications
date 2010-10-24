@@ -1,0 +1,72 @@
+<html>
+<head><title>Notwilfications Options</title>
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<link rel="stylesheet" href="style.css" type="text/css"/>
+<script type="text/javascript">
+
+var ctrl, alt, shift, keyIdentifier;
+var serverUrl; // = "http://timotheeboucher.com/twilio/chrome/";
+
+// Retrieves settings
+chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
+function restoreOptions(response) {
+  serverUrl   = response.serverUrl;
+  secret      = response.secret;
+  phoneNumber = response.phoneNumber;
+};
+
+
+// Gets number from server
+function getNumber() {
+  $.ajax({url: serverUrl+"?action=getnumber", success: function (data){var number = /[0-9]+/.exec(data);$('#phonenumber').val(number);}});  
+}
+
+// Saves number to server
+function saveNumber() {
+  console.log(serverUrl+"?action=savenumber&number="+$("#phonenumber").val());
+  $.ajax({url: serverUrl+"?action=savenumber&number="+$("#phonenumber").val(), success: function (data){alert(data);}});
+}
+
+// Saves options to localStorage.
+function saveOptions() {
+	if (keyIdentifier == '') {
+		return false;
+	} else {
+	  localStorage['ctrl']   	= ctrl;
+	  localStorage['alt']     = alt;
+	  localStorage['shift']   = shift;
+		localStorage['keyIdentifier'] = keyIdentifier;
+		return true;
+	}
+}
+
+
+</script>
+</head>
+
+<body onload="setTimeout(getNumber, 500);" onclick="">
+<div id="header">
+	<h1>Notwilfications</h1>
+</div>
+<div id="content">
+	<div id="content_bottom"></div>
+	<div id="options">
+		<h2>Options</h2>
+    <!-- <label id="serverurl_label" for="serverurl" onclick="startEditing();">Server URL:</label><input type="text" id="serverurl" value='http://timotheeboucher.com/twilio/chrome/' onclick="startEditing();"/><br class="clear"/>
+    <label id="secret_label" for="secret" onclick="startEditing();">Secret:</label><input type="text" id="secret" value='YDVPmHH0lE0FpD20HLGf' onclick="startEditing();"/><br class="clear"/>
+    <input type="submit" onclick="checkSettings();" value="Check Settings"/>
+    <div class="subtext">You need to check the settings before being able to set your phone number.</div> -->
+		<label id="phonenumber_label" for="phonenumber" onclick="">Your phone number:</label><input type="text" id="phonenumber" value='' onclick=""/>
+    <input type="submit" onclick="saveNumber();" value="Save number"/>
+    <div id="help">
+      Once your number is set, call <strong>(415) 599 2671</strong> with the <strong>PIN 9416-9606</strong>. (preferably from a different phone&hellip;) The Chrome extension will show a notification on the current webpage when the call comes in, with the ability to ignore or send to voicemail.
+    </div>
+	</div><!-- options -->
+</div><!-- content -->
+<div id="footer">
+	&copy;2010 Timoth&eacute;e Boucher&mdash;<a href="http://timotheeboucher.com">timotheeboucher.com</a>
+</div><!-- footer -->
+<script type="text/javascript">
+</script>
+</body>
+</html>

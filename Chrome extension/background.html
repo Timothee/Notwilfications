@@ -1,0 +1,86 @@
+<html>
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<body>
+<script>
+var notifications;
+var continueFlashIcon = false;
+var badgeIndex = 0;
+
+// For message passing
+chrome.extension.onRequest.addListener(
+  function(request, sender, sendResponse) {		
+    if (request.command == "restoreOptions") {
+      myServerUrl   = localStorage["serverUrl"];
+      mySecret      = localStorage["secret"];
+
+      myServerUrl = (typeof myServerUrl == "undefined"   ? "http://timotheeboucher.com/twilio/chrome/":myServerUrl);
+      // myServerUrl = (typeof myServerUrl == "undefined"   ? "http://127.0.0.1/twiliochrome/":myServerUrl);
+    	mySecret    = (typeof mySecret == "undefined"    ? "YDVPmHH0lE0FpD20HLGf":mySecret);
+    	
+      sendResponse({serverUrl: myServerUrl,
+                    secret: mySecret});
+    } else if (request.command == "getNotifications") {
+      sendResponse(notifications);
+    } else {
+      sendResponse({});
+    }
+  });
+
+</script>
+<script type="text/javascript">
+setTimeout(pollServer, 1000);
+
+function pollServer () {
+  $.ajax({url: "http://timotheeboucher.com/twilio/chrome/?action=getnotifications", success: treatNotifications})
+  setTimeout(pollServer, 1000);
+}
+
+function treatNotifications (data) {
+  notifications = JSON.parse(data);
+  var oneActiveCall = false;
+  for (var i = 0; i < notifications["Calls"].length; i++) {
+    if (notifications["Calls"][i]["Status"] == "active") {
+      oneActiveCall = true;
+    }
+  }
+  continueFlashIcon = oneActiveCall;
+  if (oneActiveCall) {
+    // chrome.browserAction.setBadgeText({"text":"CALL"});
+    // chrome.browserAction.setBadgeBackgroundColor({"color": [255, 0, 0, 255]});
+    // flashIcon();
+  } else if (notifications["Voicemails"].length){
+    chrome.browserAction.setBadgeText({"text": notifications["Voicemails"].length+""});
+    chrome.browserAction.setBadgeBackgroundColor({"color": [0, 0, 255, 255]});
+  } else {
+    chrome.browserAction.setBadgeText({"text":""});
+    // chrome.browserAction.setBadgeBackgroundColor({"color": [0, 0, 255, 255]});
+
+  }
+}
+
+function flashIcon () {
+
+  if (continueFlashIcon) {
+    if (badgeIndex == 0) {
+      chrome.browserAction.setBadgeText({"text":"CALL"});
+      chrome.browserAction.setBadgeBackgroundColor({"color": [255, 0, 0, 255]});    
+    } else if (badgeIndex == 1) {
+      chrome.browserAction.setBadgeText({"text":"ALLC"});
+      chrome.browserAction.setBadgeBackgroundColor({"color": [200, 0, 0, 255]});    
+    } else if (badgeIndex == 2) {
+      chrome.browserAction.setBadgeText({"text":"LLCA"});
+      chrome.browserAction.setBadgeBackgroundColor({"color": [255, 0, 0, 255]});
+    } else if (badgeIndex == 3) {
+      chrome.browserAction.setBadgeText({"text":"LCAL"});
+      chrome.browserAction.setBadgeBackgroundColor({"color": [200, 0, 0, 255]});
+    }
+  }
+  badgeIndex = (badgeIndex+1)%4;
+  setTimeout(flashIcon, 500);
+}
+
+flashIcon(); 
+
+</script>
+</body>
+</html>
