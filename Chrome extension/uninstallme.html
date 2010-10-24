@@ -1,0 +1,23 @@
+<html>
+<head>
+  <link rel="stylesheet" href="page_style.css" type="text/css"/>
+  <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+</head>
+<body>
+  <div id="timetouninstall">
+    <h3>Hi there!</h3>
+    <p>Thanks for installing and trying this extension. As you might have noticed, because it was a proof-of-concept for a Twilio contest, it's actually pretty useless now.</p>
+    <p>I finally got around to do something about it, and just warn you that you might want to uninstall the extension :)</p>
+    <p>I also got around to put the code on <a href="http://github.com/Timothee/Notwilfications">GitHub</a>. I figured that might be of some interest.</p>
+    <p>That's pretty much it. I just wanted to unclutter your Chrome bar with a useless icon.</p>
+    <p>I'd be happy to hear about you, so drop me a line: <a href="mailto:timothee@gmail.com">timothee@gmail.com</a>.</p>
+    <p>Finally, to uninstall the extension, go <a href="chrome://extensions/">here</a> and search for the extension called "Notwilfications".</p>
+    <p>Cheers, Tim</p>
+    <p>PS: you can find me online at <a href="http://timotheeboucher.com">timotheeboucher.com</a>, but I'm mostly on Twitter: <a href="http://twitter.com/_timothee">@_timothee</a>.</p>
+  </div>
+  
+  <script type="text/javascript">
+  $('a').live("click", function(){chrome.tabs.create({"url": this.href})});
+  </script>
+</body>
+</html>

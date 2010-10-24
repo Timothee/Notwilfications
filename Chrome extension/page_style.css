@@ -86,3 +86,10 @@
   font-size:12px;
   text-decoration: underline;
 }
+
+#timetouninstall {
+  font-family: Myriad Pro, Arial, sans-serif !important;
+  color: #333;
+  font-size: 14px;
+  width: 300px;
+}
