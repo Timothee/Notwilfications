@@ -59,23 +59,18 @@ function treatNotifications (data) {
 }
 
 function flashIcon () {
-
-  if (continueFlashIcon) {
-    if (badgeIndex == 0) {
-      chrome.browserAction.setBadgeText({"text":"CALL"});
-      chrome.browserAction.setBadgeBackgroundColor({"color": [255, 0, 0, 255]});    
-    } else if (badgeIndex == 1) {
-      chrome.browserAction.setBadgeText({"text":"ALLC"});
-      chrome.browserAction.setBadgeBackgroundColor({"color": [200, 0, 0, 255]});    
-    } else if (badgeIndex == 2) {
-      chrome.browserAction.setBadgeText({"text":"LLCA"});
-      chrome.browserAction.setBadgeBackgroundColor({"color": [255, 0, 0, 255]});
-    } else if (badgeIndex == 3) {
-      chrome.browserAction.setBadgeText({"text":"LCAL"});
-      chrome.browserAction.setBadgeBackgroundColor({"color": [200, 0, 0, 255]});
-    }
+  badgeColors = [[255, 0, 0, 255], [200, 0, 0, 255]];
+  badgeText = "CALL";
+  if (!(badgeText.length%2)) {
+    badgeText = badgeText + " ";
   }
-  badgeIndex = (badgeIndex+1)%4;
+  if (continueFlashIcon) {
+    text  = badgeText.substr(badgeIndex, badgeText.length)+
+            badgeText.substr(0, badgeIndex);
+    chrome.browserAction.setBadgeText({"text": text});
+    chrome.browserAction.setBadgeBackgroundColor({"color": badgeColors[badgeIndex%badgeColors.length]});
+  }
+  badgeIndex = (badgeIndex+1)%badgeText.length;
   setTimeout(flashIcon, 500);
 }
 

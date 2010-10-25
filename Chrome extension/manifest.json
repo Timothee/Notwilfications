@@ -1,6 +1,6 @@
 {
   "name": "Notwilfications",
-  "version": "0.9",
+  "version": "0.9.2",
   "description": "Adds in-browser notifications whenever you receive a phone call on your Twilio number with the ability to ignore the call, or send to voicemail from the notification box, plus listen to the voicemails from the popup as well",
   "background_page": "background.html",
   "options_page": "options.html",

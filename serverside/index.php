@@ -116,7 +116,7 @@ function getnumber() {
 function savenumber() {
   $phone_number = $_REQUEST["number"];
   $fh = fopen("number.php", "w");
-  fwrite($fh, "<?php define(PHONE_NUMBER, '$phone_number'); ?>");
+  fwrite($fh, "<?php define('PHONE_NUMBER', '$phone_number'); ?>");
   fclose($fh);
   echo "Number $phone_number saved.";
 } // savenumber
