@@ -2,4 +2,12 @@ Hi there,
 
 this is the code for a proof-of-concept I wrote for a Twilio developer contest. (http://contests.twilio.com/)
 
-So, yeah, the key word is PoC. It works in specific conditions :)
+So, yeah, the keyword is PoC. It works in specific conditions and many things are hardcoded :)
+
+But! It did win the contest that week, so it can't be that bad: http://blog.twilio.com/2010/05/announcing-the-winners-of-the-twilio-google-chrome-extensions-contest.html
+
+Cheers,
+
+Tim
+
+PS: code provided under the MIT License
