@@ -4,7 +4,7 @@ this is the code for a proof-of-concept I wrote for a Twilio developer contest. 
 
 So, yeah, the key word is PoC. It works in specific conditions and many things are hardcoded :)
 
-But! It did win the contest that week, so it can't be that bad: as seen on "Twilio's blog":http://blog.twilio.com/2010/05/announcing-the-winners-of-the-twilio-google-chrome-extensions-contest.html and "Chromium's blog":http://blog.chromium.org/2010/05/update-on-google-chrome-extensions.html
+But! It did win the contest that week, so it can't be that bad: as seen on Twilio's blog http://blog.twilio.com/2010/05/announcing-the-winners-of-the-twilio-google-chrome-extensions-contest.html and Chromium's blog http://blog.chromium.org/2010/05/update-on-google-chrome-extensions.html
 
 Cheers,
 
